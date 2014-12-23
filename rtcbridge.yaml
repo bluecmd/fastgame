@@ -1,0 +1,12 @@
+module: rtcbridge
+version: 1
+runtime: custom
+vm: true
+api_version: 1
+
+manual_scaling:
+  instances: 1
+
+handlers:
+- url: /.*
+  script: app.js

@@ -1,0 +1,10 @@
+name: fastgame
+version: 0.0.1
+author: Christian Svensson <blue@cmd.nu>
+description: Fastgame Example
+homepage: http://github.com/bluecmd/fastgame
+dependencies:
+  browser: any
+  rtcbridge:
+    path: ../rtcbridge/dart/
+

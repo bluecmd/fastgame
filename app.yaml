@@ -1,0 +1,22 @@
+application: bluecmd0
+version: 1
+runtime: python27
+api_version: 1
+threadsafe: true
+
+automatic_scaling:
+  min_idle_instances: 1
+  max_pending_latency: 100ms
+
+handlers:
+
+- url: /(.*\.(html|js))
+  static_files: src/fastgame/build/web/\1
+  upload: src/fastgame/build/web/.*
+
+- url: /(.*)
+  static_files: static/\1
+  upload: static/.*
+
+- url: /
+  script: main.index

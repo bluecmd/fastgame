@@ -1,0 +1,6 @@
+name: rtcbridge
+version: 0.0.1
+author: Christian Svensson <blue@cmd.nu>
+description: Dart to UDP client
+homepage: http://github.com/bluecmd/fastgame
+
