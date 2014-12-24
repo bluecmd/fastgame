@@ -1,5 +1,6 @@
 library rtcbridge;
 
+import 'dart:convert';
 import 'dart:html';
 import 'dart:typed_data';
 
@@ -46,29 +47,34 @@ class BridgeClient {
 
     pc.createOffer().then((s) {
       pc.setLocalDescription(s);
-      // TODO(bluecmd): Use protobufs here
+
       print('Got SDP: ${s.sdp}, type: ${s.type}');
-      this._signalingSocket.send(s.sdp);
+
+      var request = new HttpRequest();
+      request.onReadyStateChange.listen((_) {
+        if (request.readyState == HttpRequest.DONE &&
+          (request.status == 200 || request.status == 0)) {
+        print('Got remote: ${request.responseText}');
+        Map map = JSON.decode(request.responseText);
+        this._serverPeer.setRemoteDescription(map);
+        this._channelOpen = true;
+        connectedCb();
+        }
+      });
+
+      request.open('POST', '/connect', async: false);
+      var map = new Map();
+      map['sdp'] = s.sdp;
+      map['type'] = s.type;
+      request.send(JSON.encode(map));
     });
 
     this._serverPeer = pc;
-    this._channelOpen = true;
-    connectedCb();
   }
 
-  void connect(String url, connectedCb()) {
-    print('Connecting to signaling socket: $url');
-    // TODO(bluecmd): Replace with Python Channels
-    //this._signalingSocket = new WebSocket(url);
-    //this._signalingSocket.onOpen.listen((Event e) {
-    //  print('Signaling socket connected');
-    //  this._signalingOpen = true;
-    //  this._offer(connectedCb);
-    //});
-
-    //this._signalingSocket.onError.listen((Event e) {
-    //  print('Signaling socket error');
-    //});
+  void connect(String token, connectedCb()) {
+    print('Connecting to signaling channel: $token');
+    this._offer(connectedCb);
   }
 
   void send(Uint8List data) {

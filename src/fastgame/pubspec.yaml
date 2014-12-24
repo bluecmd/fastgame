@@ -7,4 +7,3 @@ dependencies:
   browser: any
   rtcbridge:
     path: ../rtcbridge/dart/
-
