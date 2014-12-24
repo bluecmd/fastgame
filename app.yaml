@@ -1,5 +1,5 @@
 application: bluecmd0
-version: 9
+version: 25
 runtime: python27
 api_version: 1
 threadsafe: true
@@ -13,7 +13,7 @@ handlers:
 - url: /
   script: main.application
 
-- url: /channel
+- url: /connect
   script: main.application
 
 - url: /(.*\.(html|js))
